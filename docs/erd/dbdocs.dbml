@@ -8,5 +8,5 @@ Project NotificationApi {
 
 Table Subscriber {
        id      char          [not null, pk]
-       name    char
+       email    char
 }
