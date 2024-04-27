@@ -1,0 +1,12 @@
+Project NotificationApi {
+        database_type: 'NotificationApiDB'
+        Node: '''
+                # Notification ERD
+                **ERD elaborado para o banco de dados da NotificationApi**
+        '''
+}
+
+Table Subscriber {
+       id      char          [not null, pk]
+       name    char
+}

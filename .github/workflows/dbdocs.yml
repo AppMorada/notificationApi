@@ -1,0 +1,33 @@
+name: CI - dbdocs
+
+on:
+  push:
+    branches: 
+      - "main"
+      - "release/**"
+    paths:
+      - ".github/workflows/dbdocs.yml"
+      - "docs/erd/dbdocs.dbml"
+
+concurrency:
+  group: "dbdocs"
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        id: git-clone
+        name: Cloning repository
+
+      - name: Installing dbdocs
+        id: install-dbdocs
+        run: npm install -g dbdocs
+
+      - name: Update dbdocs project
+        env:
+          DBDOCS_TOKEN: ${{secrets.DBDOCS_TOKEN}}
+        run: dbdocs build ./docs/erd/dbdocs.dbml
+
+
