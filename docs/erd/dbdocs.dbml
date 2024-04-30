@@ -6,7 +6,31 @@ Project NotificationApi {
         '''
 }
 
-Table Subscriber {
+Table Subscribers {
        id      char          [not null, pk]
-       email    char
+       user_id         char     [not null]
+       value           char     [not null]       
+       sign_up_date    datetime [not null]
+}
+
+
+
+Table Notifiers {
+       id      char          [not null, pk]
+       subscriber_id    char [not null, ref: > Subscribers.id]
+       notifier_id     char  [not null]
+}
+
+Table Notifications {
+       id             char        [not null, pk]
+       publisher_id    char        [not null, ref: > Notifiers.id]
+       title          char        [not null]
+       message        char        [not null]
+       created_at     datetime    [not null]
+}
+
+Table NotificationsStatus {
+        notification_id    char    [not null, ref: > Notifications.id]
+        subscriber_id      char    [not null, ref: > Subscribers.id]
+        accessed bool [not null]
 }
