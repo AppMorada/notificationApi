@@ -2,35 +2,40 @@ Project NotificationApi {
         database_type: 'NotificationApiDB'
         Node: '''
                 # Notification ERD
-                **ERD elaborado para o banco de dados da NotificationApi**
+                **ERD elaborado para o banco de dados Firestore da NotificationApi**
         '''
 }
 
-Table Subscribers {
-       id      char          [not null, pk]
-       user_id         char     [not null]
-       value           char     [not null]       
-       sign_up_date    datetime [not null]
+Table subscribers {
+       id              String      [not null, pk]
+       user_id         String      [not null]
+       value           String      [not null]
+       segment         String      [not null]
+       sign_up_date    Timestamp   [not null]
 }
 
+Table publishers_conn {
+       id               String          [pk]
+       subscriber_id    Reference       [not null, ref: > subscribers.id]
+       publisher_id     String          [not null]
 
-
-Table Notifiers {
-       id      char          [not null, pk]
-       subscriber_id    char [not null, ref: > Subscribers.id]
-       notifier_id     char  [not null]
+       Indexes {
+          (subscriber_id, publisher_id) [name: 'UQ_publishers_conn_publisher_id_subscriber_id']
+          publisher_id [unique]
+          subscriber_id [unique]
+       }
 }
 
-Table Notifications {
-       id             char        [not null, pk]
-       publisher_id    char        [not null, ref: > Notifiers.id]
-       title          char        [not null]
-       message        char        [not null]
-       created_at     datetime    [not null]
+Table notifications {
+       id              String           [not null, pk]
+       publisher_id    Reference        [not null]
+       title           String           [not null]
+       message         String           [not null]
+       created_at      Timestamp        [not null]
 }
 
-Table NotificationsStatus {
-        notification_id    char    [not null, ref: > Notifications.id]
-        subscriber_id      char    [not null, ref: > Subscribers.id]
-        accessed bool [not null]
+Table notifications_status {
+        notification_id    Reference    [not null, ref: > notifications.id]
+        subscriber_id      Reference    [not null, ref: > subscribers.id]
+        accessed           boolean      [not null, default: false]
 }
