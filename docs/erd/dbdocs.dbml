@@ -9,7 +9,7 @@ Project NotificationApi {
 Table subscribers {
        id              String      [not null, pk]
        user_id         String      [not null]
-       value           String      [not null]
+       token           String      [not null]
        segment         String      [not null]
        sign_up_date    Timestamp   [not null]
 }
