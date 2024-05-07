@@ -9,7 +9,7 @@ Project NotificationApi {
 Table Subscribers {
        id      char          [not null, pk]
        user_id         char     [not null]
-       value           char     [not null]       
+       token           char     [not null]       
        sign_up_date    datetime [not null]
 }
 
