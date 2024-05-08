@@ -46,7 +46,14 @@
         "description": "Lê as mensagens de um condomínio, contanto que o cliente esteje devidamente autenticado e autorizado.",
         "responses": {
           "200": {
-            "description": "Caminho feliz"
+            "description": "Caminho feliz",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/getNotification"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -86,7 +93,7 @@
           "required": true
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Cria um novo token de identificação com base no dispositivo do usuário"
           }
         },
@@ -140,7 +147,7 @@
             "required": true
           },
           {
-            "name": "userId",
+            "name": "memberId",
             "in": "query",
             "schema": {
               "type": "string"
@@ -158,7 +165,7 @@
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Caminho feliz"
           }
         },
@@ -176,7 +183,7 @@
         ],
         "parameters": [
           {
-            "name": "userId",
+            "name": "condominiumId",
             "in": "query",
             "schema": {
               "type": "string"
@@ -184,12 +191,12 @@
             "required": true
           },
           {
-            "name": "condominiumId",
+            "name": "memberId",
             "in": "query",
             "schema": {
               "type": "string"
             },
-            "required": true
+            "required": false
           },
           {
             "name": "offset",
@@ -212,7 +219,14 @@
         "description": "Lê as mensagens de um condomínio, contanto que o administrador esteje devidamente autenticado e autorizado.",
         "responses": {
           "200": {
-            "description": "Caminho feliz"
+            "description": "Caminho feliz",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/getNotificationAsAdmin"
+                }
+              }
+            }
           }
         },
         "security": [
@@ -237,17 +251,51 @@
       }
     },
     "schemas": {
-      "unauthorized": {
+      "getNotificationAsAdmin": {
         "type": "object",
         "properties": {
-          "statusCode": {
-            "type": "integer",
-            "description": "Status da requisição",
-            "example": 401
+          "memberId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "condominiumId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string"
           },
           "message": {
+            "type": "string"
+          },
+          "createdAt": {
             "type": "string",
-            "description": "Descrição da response"
+            "format": "date"
+          },
+          "accessed": {
+            "type": "boolean"
+          }
+        }
+      },
+      "getNotification": {
+        "type": "object",
+        "properties": {
+          "condominiumId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date"
+          },
+          "accessed": {
+            "type": "boolean"
           }
         }
       },

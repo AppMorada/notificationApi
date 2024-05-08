@@ -14,8 +14,8 @@ Table subscribers {
 }
 
 Table subscriber_publisher_conn_maps {
-       publisher_conn_id     String      [not null, ref: - publishers_conn.id]
-       subscriber_id         String      [not null, ref: - subscribers.id]
+       publisher_conn_id     String      [not null, ref: > publishers_conn.id]
+       subscriber_id         String      [not null, ref: > subscribers.id]
 
        Indexes {
           (subscriber_id, publisher_conn_id) [name: 'UQ_publisher_conn_id_subscriber_id']
