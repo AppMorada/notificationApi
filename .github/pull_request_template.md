@@ -1,9 +1,3 @@
----
-name: Default
-about: Template padrão de pull request do projeto
-assignes: NicolasCBV
----
-
 ## Resuma o seu PR em até 5 linhas:
 
 ## Selecione o tipo de mudanças feitas:
