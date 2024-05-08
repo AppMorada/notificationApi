@@ -1,0 +1,299 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "MoradaApp - OpenAPI 3.0",
+    "description": "Documentação dedicada a API de notificaçõies do MoradaApp.",
+    "version": "0.0.0"
+  },
+  "externalDocs": {
+    "description": "Entenda mais sobre o Swagger",
+    "url": "http://swagger.io"
+  },
+  "paths": {
+    "/notification": {
+      "get": {
+        "tags": [
+          "Rotas dedicadas ao morador"
+        ],
+        "parameters": [
+          {
+            "name": "condominiumId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            },
+            "required": false
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Número máximo de usuários por página",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "summary": "Lê as mensagens de um condomínio",
+        "description": "Lê as mensagens de um condomínio, contanto que o cliente esteje devidamente autenticado e autorizado.",
+        "responses": {
+          "200": {
+            "description": "Caminho feliz"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/notification/registry": {
+      "post": {
+        "tags": [
+          "Rotas dedicadas ao morador"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "condominiumId",
+            "description": "Número de identificação do condomínio",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "summary": "Registra um usuário no grupo de notificação",
+        "description": "Rota dedicada a registrar um usuário em um grupo de notificação no condominial",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/registry"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Cria um novo token de identificação com base no dispositivo do usuário"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Rotas dedicadas ao morador"
+        ],
+        "summary": "Atualiza os dados de notificação do usuário",
+        "description": "Atualiza as informações referentes ao dispositivo do usuário, informando se o mesmo ainda é valido ou não para receber novas notificações no sistema",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/updateToken"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Caminho feliz"
+          }
+        },
+        "security": [
+          {
+            "notificationToken": []
+          }
+        ]
+      }
+    },
+    "/notification/admin/push": {
+      "post": {
+        "tags": [
+          "Rotas dedicadas ao administrador ou funcionário"
+        ],
+        "summary": "Rota dedicada a realiar notificações",
+        "description": "Rota dedicada a realizar as notificações com base nas query params informadas na requisição, caso o userId seja omitido, a notificação vai ser enviada para todos do condomínio",
+        "parameters": [
+          {
+            "name": "condominiumId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": false
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/push"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Caminho feliz"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/notification/admin": {
+      "get": {
+        "tags": [
+          "Rotas dedicadas ao administrador ou funcionário"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "condominiumId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            },
+            "required": false
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            },
+            "required": false
+          }
+        ],
+        "summary": "Lê as mensagens de um condomínio",
+        "description": "Lê as mensagens de um condomínio, contanto que o administrador esteje devidamente autenticado e autorizado.",
+        "responses": {
+          "200": {
+            "description": "Caminho feliz"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "notificationToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "unauthorized": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "description": "Status da requisição",
+            "example": 401
+          },
+          "message": {
+            "type": "string",
+            "description": "Descrição da response"
+          }
+        }
+      },
+      "registry": {
+        "type": "object",
+        "properties": {
+          "notificationToken": {
+            "type": "string"
+          }
+        }
+      },
+      "push": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "segment": {
+            "type": "object",
+            "properties": {
+              "block": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "updateToken": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "object",
+            "properties": {
+              "expires_at": {
+                "type": "number"
+              },
+              "is_enabled": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

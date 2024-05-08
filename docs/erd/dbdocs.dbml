@@ -8,21 +8,32 @@ Project NotificationApi {
 
 Table subscribers {
        id              String      [not null, pk]
-       user_id         String      [not null]
+       is_enabled      Boolean     [not null]
        token           String      [not null]
-       segment         String      [not null]
-       sign_up_date    Timestamp   [not null]
+       expires_at      Timestamp   [not null]
+}
+
+Table subscriber_publisher_conn_maps {
+       publisher_conn_id     String      [not null, ref: - publishers_conn.id]
+       subscriber_id         String      [not null, ref: - subscribers.id]
+
+       Indexes {
+          (subscriber_id, publisher_conn_id) [name: 'UQ_publisher_conn_id_subscriber_id']
+          subscriber_id [unique]
+          publisher_conn_id [unique]
+       }
 }
 
 Table publishers_conn {
-       id               String          [pk]
-       subscriber_id    Reference       [not null, ref: > subscribers.id]
+       id               String          [not null, pk]
+       user_id          String          [not null]
        publisher_id     String          [not null]
+       segment          String          [not null]
 
        Indexes {
-          (subscriber_id, publisher_id) [name: 'UQ_publishers_conn_publisher_id_subscriber_id']
+          (user_id, publisher_id) [name: 'UQ_publishers_conn_publisher_id_user_id']
           publisher_id [unique]
-          subscriber_id [unique]
+          user_id [unique]
        }
 }
 
