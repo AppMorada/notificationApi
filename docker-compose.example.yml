@@ -1,0 +1,39 @@
+version: "3"
+
+services:
+  db:
+    image: postgres
+    restart: always
+    hostname: db
+    ports:
+      - "7845:5432"
+    environment:
+      POSTGRES_DB: "mydb"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db:/var/lib/postgresql/data
+
+  app:
+    build:
+      dockerfile: dockerfile
+      context: .
+    hostname: app
+    restart: always
+    volumes:
+      - .:/home/node/app
+      - firebase-cache:/root/.cache/firebase
+      - firebase-configs:/root/.config
+    ports:
+      - 8081:8081 # Cloud Firestore
+      - 4001:4001 # Emulator Suite UI
+      - 9229:9229 # Debugger
+      - 4845:3000
+
+volumes:
+  db:
+    driver: local
+  firebase-cache:
+    driver: local
+  firebase-configs:
+    driver: local
