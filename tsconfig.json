@@ -27,11 +27,12 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@app/*": ["src/app/*"],
-      "@service/*": ["src/app/service/*"],
-      "@infra/*": ["src/infra/*"],
-      "@tests/*": ["src/tests/*"],
-      "@utils/*": ["src/utils/*"]
+      "@app/*": ["src/notification/app/*"],
+      "@service/*": ["src/notification/app/service/*"],
+      "@infra/*": ["src/notification/infra/*"],
+      "@tests/*": ["src/notification/tests/*"],
+      "@utils/*": ["src/notification/utils/*"],
+      "@tests/*": ["src/notification/tests/*"]
     }
   },
   "include": [
