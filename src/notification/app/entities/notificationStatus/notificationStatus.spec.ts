@@ -1,7 +1,7 @@
 import { notificationStatusFactory } from '@tests/factory/notificationStatusFactory';
 
-describe('Notification Status test', () => {
-	it('should be able to notification status class', () => {
+describe('NotificationStatus test', () => {
+	it('should be able to NotificationStatus class', () => {
 		const sut = notificationStatusFactory();
 		const sutWithRef = sut;
 		const sutWithNoRef = sut.dereference();

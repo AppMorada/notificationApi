@@ -1,18 +1,22 @@
 import { TReplace } from '@utils/replace';
 import { Entity } from '../entity';
-import { randomUUID } from 'crypto';
+import { UUID } from '../vo/generals/uuid';
 
 interface IProps {
-	id: string;
-	publisherId: string;
+	id: UUID;
+	publisherId: UUID;
 	title: string;
 	message: string;
 	createdAt: Date;
 }
 
 export type TNotificationPropsInput = TReplace<
-	TReplace<IProps, { id?: string }>,
-	{ createdAt?: Date }
+	IProps,
+	{
+		id?: string;
+		publisherId: string;
+		createdAt?: Date;
+	}
 >;
 
 export class Notification implements Entity<Notification> {
@@ -20,8 +24,10 @@ export class Notification implements Entity<Notification> {
 
 	constructor(input: TNotificationPropsInput) {
 		this._props = {
-			id: input.id ?? randomUUID(),
-			publisherId: input.publisherId,
+			id: input.id ? new UUID(input.id) : UUID.genV4(),
+			publisherId: input.publisherId
+				? new UUID(input.publisherId)
+				: UUID.genV4(),
 			title: input.title,
 			message: input.message,
 			createdAt: input.createdAt ?? new Date(),
@@ -30,8 +36,8 @@ export class Notification implements Entity<Notification> {
 
 	dereference(): Notification {
 		return new Notification({
-			id: this.id,
-			publisherId: this.publisherId,
+			id: this.id.value,
+			publisherId: this.publisherId.value,
 			title: this.title,
 			message: this.message,
 			createdAt: this.createdAt,
@@ -43,22 +49,22 @@ export class Notification implements Entity<Notification> {
 
 		return (
 			input instanceof Notification &&
-			input.id === this.id &&
-			input.publisherId === this.publisherId &&
+			input.id.equalTo(this.id) &&
+			input.publisherId.equalTo(this.publisherId) &&
 			input.title === this.title &&
 			input.message === this.message &&
 			input.createdAt === this.createdAt
 		);
 	}
 
-	get id() {
+	get id(): UUID {
 		return this._props.id;
 	}
 
 	get publisherId() {
 		return this._props.publisherId;
 	}
-	set publisherId(input: string) {
+	set publisherId(input: UUID) {
 		this._props.publisherId = input;
 	}
 

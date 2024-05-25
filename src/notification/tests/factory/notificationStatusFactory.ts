@@ -1,7 +1,7 @@
 import {
 	NotificationStatus,
 	TNotificationStatusInput,
-} from '@app/entities/notification.status';
+} from '@app/entities/notificationStatus';
 import { randomUUID } from 'crypto';
 
 type TOverride = Partial<TNotificationStatusInput>;
