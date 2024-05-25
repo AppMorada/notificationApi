@@ -1,9 +1,9 @@
 import { TReplace } from 'src/notification/utils/replace';
-import { randomUUID } from 'node:crypto';
 import { Entity } from '../entity';
+import { UUID } from '../vo/generals/uuid';
 
 interface IProps {
-	id: string;
+	id: UUID;
 	isEnabled: boolean;
 	token: string;
 	expiresAt: Date;
@@ -16,7 +16,7 @@ export class Subscriber implements Entity<Subscriber> {
 
 	constructor(input: TSubscriberPropsInput) {
 		this._props = {
-			id: input.id ?? randomUUID(),
+			id: input.id ? new UUID(input.id) : UUID.genV4(),
 			token: input.token,
 			expiresAt: input.expiresAt,
 			isEnabled: input.isEnabled,
@@ -25,7 +25,7 @@ export class Subscriber implements Entity<Subscriber> {
 
 	dereference(): Subscriber {
 		return new Subscriber({
-			id: this.id,
+			id: this.id.value,
 			token: this.token,
 			isEnabled: this.isEnabled,
 			expiresAt: this.expiresAt,
@@ -40,11 +40,11 @@ export class Subscriber implements Entity<Subscriber> {
 			input.expiresAt === this.expiresAt &&
 			input.token === this.token &&
 			input.isEnabled === this.isEnabled &&
-			input.id === this.id
+			input.id.equalTo(this.id)
 		);
 	}
 
-	get id() {
+	get id(): UUID {
 		return this._props.id;
 	}
 

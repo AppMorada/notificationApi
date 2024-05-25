@@ -1,7 +1,7 @@
 import { notificationFactory } from '@tests/factory/notificationFactory';
 
 describe('Notification test', () => {
-	it('should be able to create a notification class', () => {
+	it('should be able to create a Notification class', () => {
 		const sut = notificationFactory();
 		const sutWithRef = sut;
 		const sutWithNoRef = sut.dereference();

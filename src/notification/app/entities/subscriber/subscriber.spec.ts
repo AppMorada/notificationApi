@@ -1,7 +1,7 @@
 import { subscriberFactory } from '@tests/factory/subscriberFactory';
 
 describe('Subscriber test', () => {
-	it('should be able to create a subscriber class', () => {
+	it('should be able to create a Subscriber class', () => {
 		const sut = subscriberFactory();
 		const sutWithRef = sut;
 		const sutWithNoRef = sut.dereference();
